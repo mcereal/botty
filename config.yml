@@ -16,8 +16,4 @@ team_name:
     ignore_users: 
     # - conveyor
     repos:
-    - "conveyor"
-    - "cs-infra"
-    - "operations"
-    - "cs-apps"
-    - "bluefringe-infra"
+    - "go-api-server-example"
