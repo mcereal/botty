@@ -17,3 +17,7 @@ team_name:
     # - conveyor
     repos:
     - "go-api-server-example"
+    # - "cs-infra"
+    # - "operations"
+    # - "cs-apps"
+    # - "bluefringe-infra"

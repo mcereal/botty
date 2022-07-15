@@ -30,8 +30,6 @@ func NewRestClient() *RestClient {
 func (r *RestClient) MakeRestCall() ([]byte, http.Header, error) {
 	restURL, err := url.Parse(r.BaseURL)
 
-	log.Println(restURL)
-
 	if err != nil {
 		log.WithFields(log.Fields{"baseURL": r.BaseURL, "verb": r.Verb}).Errorf("Failed to Parse URL with Error : %v", err)
 		return nil, nil, err

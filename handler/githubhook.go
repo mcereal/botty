@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/mcereal/go-api-server-example/client"
 	"github.com/mcereal/go-api-server-example/github"
 	log "github.com/sirupsen/logrus"
@@ -13,11 +12,6 @@ import (
 
 // GitHubWebhookHandler is the handler for Github webhooks
 func (h *Handler) GitHubWebhookHandler(c *gin.Context) {
-	//Load Environment variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
 
 	// set headers and send a json response that the webhook was recieved
 	c.Header("Access-Control-Allow-Origin", "*")

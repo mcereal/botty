@@ -16,16 +16,17 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 	openPRs := NewOpenPRs()
 	openPRs.AddJSONData(response)
 	payloadData := openPRs.Data
-
 	// check to see if the the repo in payload is acceptable
 	for _, v := range config.AppConfig.Team {
+		log.Println(v.Repos)
+		log.Println(payloadData.Repository.Name)
 		if slices.Contains(v.Repos, payloadData.Repository.Name) {
 			url := os.Getenv(v.Channel)
 			env := os.Getenv("ENVIRONMENT")
 			if env == "development" || config.AppConfig.Application.Environment == "development" {
 				url = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
 			}
-			log.Println(url)
+
 			if url == "" {
 				log.Println("No Webhook found")
 				return nil, "No Webhook found"
