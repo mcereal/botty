@@ -1,0 +1,8 @@
+{
+  "watch": ["./"],
+  "delay": 1,
+  "ext": "go",
+  "ignore": ["Dockerfile", ".env", "**_test.go"],
+  "exec": "go run main.go",
+  "signal": "SIGTERM"
+}

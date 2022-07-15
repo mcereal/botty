@@ -1,0 +1,5 @@
+.env
+nodemon.json
+.golangci.yml
+build.ymlgh-pr-wh-example.jsonpr-list.json
+testconfig.yml

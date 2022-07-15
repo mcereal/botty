@@ -1,0 +1,24 @@
+application:
+  name: 'cs-code-review-bot'
+  environment: 'production'
+
+server:
+  port: 8080
+
+github:
+  github_url: "https://github.com/api/v3"
+  github_token: ''
+
+team_name:
+  - name: ops
+    slack_group_id: <!subteam^S8S366W1M>
+    channel: CS_CODE_REVIEW_SLACK_WEBHOOK_URL
+    enable_cron: true
+    ignore_users: 
+    # - conveyor
+    repos:
+    - "conveyor"
+    - "cs-infra"
+    - "operations"
+    - "cs-apps"
+    - "bluefringe-infra"
