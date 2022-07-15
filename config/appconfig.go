@@ -23,7 +23,7 @@ type Config struct {
 		Environment string `default:"production" yaml:"environment"`
 	} `yaml:"application"`
 	Server struct {
-		Port string `yaml:"port"`
+		Port string `default:"8080" yaml:"port"`
 	} `yaml:"server"`
 	Github struct {
 		GitHubURL   string `default:"https://github.com/api/v3" yaml:"github_url"`
