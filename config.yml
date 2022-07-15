@@ -2,8 +2,8 @@ application:
   name: 'go-api-server-example'
   environment: 'production'
 
-server:
-  port: 8080
+# server:
+#   port: 8080
 
 github:
   github_url: "https://github.com/api/v3"
