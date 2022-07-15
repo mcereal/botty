@@ -25,7 +25,7 @@ RUN go get -d -v ./...
 
 RUN go install -v ./...
 
-RUN go build -o /cs-code-review-bot
+RUN go build -o /go-api-server-example
 
 ##
 ## Deploy
@@ -35,7 +35,7 @@ FROM gcr.io/distroless/base-debian10
 
 WORKDIR /
 
-COPY --from=build /cs-code-review-bot /cs-code-review-bot
+COPY --from=build /go-api-server-example /go-api-server-example
 
 COPY --from=build /app/config.yml config.yml
 
@@ -43,4 +43,4 @@ EXPOSE 8080
 
 USER nonroot:nonroot
 
-ENTRYPOINT ["/cs-code-review-bot"]
+ENTRYPOINT ["/go-api-server-example"]
