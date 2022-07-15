@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/go-co-op/gocron"
-	"github.com/mcereal/go-api-server/github"
+	"github.com/mcereal/go-api-server-example/github"
 	log "github.com/sirupsen/logrus"
 )
 

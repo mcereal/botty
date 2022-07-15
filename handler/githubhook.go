@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/mcereal/go-api-server/client"
-	"github.com/mcereal/go-api-server/github"
+	"github.com/mcereal/go-api-server-example/client"
+	"github.com/mcereal/go-api-server-example/github"
 	log "github.com/sirupsen/logrus"
 )
 

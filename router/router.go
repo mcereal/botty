@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mcereal/go-api-server/handler"
+	"github.com/mcereal/go-api-server-example/handler"
 )
 
 // InitializeRouter starts gin engine, then it maps the handlers

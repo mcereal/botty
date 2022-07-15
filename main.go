@@ -6,9 +6,9 @@ import (
 	"os/signal"
 
 	"github.com/joho/godotenv"
-	"github.com/mcereal/go-api-server/config"
-	"github.com/mcereal/go-api-server/cron"
-	"github.com/mcereal/go-api-server/router"
+	"github.com/mcereal/go-api-server-example/config"
+	"github.com/mcereal/go-api-server-example/cron"
+	"github.com/mcereal/go-api-server-example/router"
 	log "github.com/sirupsen/logrus"
 )
 

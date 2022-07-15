@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mcereal/go-api-server/config"
-	"github.com/mcereal/go-api-server/slack"
+	"github.com/mcereal/go-api-server-example/config"
+	"github.com/mcereal/go-api-server-example/slack"
 	"golang.org/x/exp/slices"
 )
 
