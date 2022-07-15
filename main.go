@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -60,9 +61,10 @@ func main() {
 			Handler: r,
 		}
 	} else {
+		address := fmt.Sprintf(":%s", port)
 		log.Infof("Listening on port: %s", port)
 		srv = &http.Server{
-			Addr:    ":8080",
+			Addr:    address,
 			Handler: r,
 		}
 	}
