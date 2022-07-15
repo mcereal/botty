@@ -67,6 +67,9 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 				Repo:        payloadData.Repository.Name,
 				Pull:        payloadData.Number,
 				Merged:      payloadData.PullRequest.Merged,
+				AvatarURL:   payloadData.Sender.AvatarURL,
+				Login:       payloadData.Sender.Login,
+				AuthorURL:   payloadData.Sender.AuthorURL,
 			}
 
 			body := messageContent.CreateMessage()

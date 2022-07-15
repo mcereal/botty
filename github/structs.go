@@ -38,7 +38,9 @@ type pullRequestStruct struct {
 
 // senderStruct is the nested field "sender" in the payload
 type senderStruct struct {
-	Login string `json:"login"`
+	Login     string `json:"login"`
+	AvatarURL string `json:"avatar_url"`
+	AuthorURL string `json:"html_url"`
 }
 
 // repositoryStruct is the nested field "repository" in the payload
