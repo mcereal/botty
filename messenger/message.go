@@ -52,6 +52,7 @@ func (s *TextInfo) CreateMessage() *bytes.Buffer {
 	if s.Type == "Stale" {
 		s.Emoji = ":warning:"
 	}
+
 	// https://cdn.discordapp.com/avatars/997248910991048874/df91181b3f1cf0ef1592fbe18e0962d7.webp?size=160
 	// build the text string from the github url and description
 	content := fmt.Sprintf("%s [%s:%v](%s) %s", s.Emoji, s.Repo, s.Pull, s.URL, s.MessageBody)

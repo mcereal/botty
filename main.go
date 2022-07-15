@@ -55,7 +55,7 @@ func main() {
 	 dialog every time you start the server.
 	*/
 	if env == "development" {
-		log.Infof("Environment: ", env)
+		log.Infof("Environment: %s", env)
 		log.Infof("Listening on http://localhost:%s/ ", port)
 		srv = &http.Server{
 			Addr:    "localhost:" + port,
@@ -63,7 +63,7 @@ func main() {
 		}
 	} else {
 		address := fmt.Sprintf(":%s", port)
-		log.Infof("Environment: ", env)
+		log.Infof("Environment: %s", env)
 		log.Infof("Listening on port: %s", port)
 		srv = &http.Server{
 			Addr:    address,
