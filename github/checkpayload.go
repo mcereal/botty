@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mcereal/go-api-server-example/config"
-	"github.com/mcereal/go-api-server-example/slack"
+	"github.com/mcereal/go-api-server-example/messenger"
 	"golang.org/x/exp/slices"
 )
 
@@ -23,16 +23,17 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			url := os.Getenv(v.Channel)
 			env := os.Getenv("ENVIRONMENT")
 			if env == "development" || config.AppConfig.Application.Environment == "development" {
-				url = os.Getenv("PR_BOT_TEST_PUBLIC_SLACK_WEBHOOK_URL")
+				url = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
 			}
+			log.Println(url)
 			if url == "" {
 				log.Println("No Webhook found")
 				return nil, "No Webhook found"
 			}
 			// Dont send a message if the user is ignored
 			if slices.Contains(v.IgnoreUsers, payloadData.Sender.Login) {
-				log.Println("Ignoring Slack Post: User Ignored")
-				return nil, "Ignoring Slack Post: User Ignored"
+				log.Println("Ignoring Message Post: User Ignored")
+				return nil, "Ignoring Message Post: User Ignored"
 			}
 
 			// Don't send messages on reviews or reopened
@@ -57,9 +58,8 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			}
 
 			// Create the slack message
-			slackMessage := &slack.TextInfo{
+			messageContent := &messenger.TextInfo{
 				Type:        "NewPR",
-				SlackTeam:   v.SlackGroupID,
 				Action:      payloadData.Action,
 				URL:         payloadData.PullRequest.HTMLURL,
 				MessageBody: payloadData.PullRequest.Title,
@@ -68,7 +68,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 				Merged:      payloadData.PullRequest.Merged,
 			}
 
-			body := slackMessage.CreateMessage()
+			body := messageContent.CreateMessage()
 			return body, url
 		}
 	}

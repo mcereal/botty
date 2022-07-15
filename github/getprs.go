@@ -10,7 +10,7 @@ import (
 
 	"github.com/mcereal/go-api-server-example/client"
 	"github.com/mcereal/go-api-server-example/config"
-	"github.com/mcereal/go-api-server-example/slack"
+	"github.com/mcereal/go-api-server-example/messenger"
 )
 
 // GetOpenPrs gets Github PRs
@@ -33,21 +33,19 @@ func GetOpenPrs() {
 	body := bytes.NewBuffer([]byte("PRs Please"))
 
 	for _, v := range config.AppConfig.Team {
-		slackGroupID := v.SlackGroupID
 		repoList := v.Repos
-		slackURL := os.Getenv(v.Channel)
+		channelURL := os.Getenv(v.Channel)
 		env := os.Getenv("ENVIRONMENT")
 		if env == "development" || config.AppConfig.Application.Environment == "development" {
-			slackURL = os.Getenv("PR_BOT_TEST_PUBLIC_SLACK_WEBHOOK_URL")
+			channelURL = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
 		}
-		if slackURL == "" {
+		if channelURL == "" {
 			log.Println("No Webhook found")
 			return
 		}
 		if v.EnableCron {
 			for r := range repoList {
 				url := fmt.Sprintf("%s/repos/CIO-SETS/%s/pulls", gitHubBaseURL, repoList[r])
-				fmt.Println("URLLLLLLLLL", url)
 				newClient := &client.RestClient{
 					Ctx:               ctx,
 					BaseURL:           url,
@@ -75,9 +73,8 @@ func GetOpenPrs() {
 					if elapsedtime && !listPulls[v].Draft {
 						fmt.Println("DRAFT", listPulls[v].Draft)
 						fmt.Println("TIME", listPulls[v].CreatedAt)
-						slackMessage := &slack.TextInfo{
+						slackMessage := &messenger.TextInfo{
 							Type:        "Stale",
-							SlackTeam:   slackGroupID,
 							URL:         htmlURL,
 							MessageBody: elapsedMessage,
 							Repo:        repoName,
@@ -91,7 +88,7 @@ func GetOpenPrs() {
 						// Create a REST client and then make the request using the slack message body
 						restClient := &client.RestClient{
 							Ctx:               ctx,
-							BaseURL:           slackURL,
+							BaseURL:           channelURL,
 							Verb:              "POST",
 							Body:              body,
 							AdditionalHeaders: addHeaders.Header,

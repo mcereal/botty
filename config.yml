@@ -1,5 +1,5 @@
 application:
-  name: 'cs-code-review-bot'
+  name: 'go-api-server-example'
   environment: 'production'
 
 server:
@@ -11,8 +11,7 @@ github:
 
 team_name:
   - name: ops
-    slack_group_id: <!subteam^S8S366W1M>
-    channel: CS_CODE_REVIEW_SLACK_WEBHOOK_URL
+    channel: DEFAULT_CHANNEL_WEBHOOK_URL
     enable_cron: true
     ignore_users: 
     # - conveyor

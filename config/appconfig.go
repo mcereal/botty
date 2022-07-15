@@ -34,12 +34,11 @@ type Config struct {
 
 // TeamSettings holds the team settings
 type TeamSettings struct {
-	Name         string   `yaml:"name"`
-	SlackGroupID string   `yaml:"slack_group_id"`
-	Channel      string   `yaml:"channel"`
-	EnableCron   bool     `default:"false" yaml:"enable_cron"`
-	Repos        []string `default:"conveyor cs-infra operations cs-apps" yaml:"repos"`
-	IgnoreUsers  []string `yaml:"ignore_users"`
+	Name        string   `yaml:"name"`
+	Channel     string   `yaml:"channel"`
+	EnableCron  bool     `default:"false" yaml:"enable_cron"`
+	Repos       []string `default:"conveyor cs-infra operations cs-apps" yaml:"repos"`
+	IgnoreUsers []string `yaml:"ignore_users"`
 }
 
 // readFile opens the config file, parses it, and loads the Config struct
