@@ -154,6 +154,7 @@ Edit the [config.yml](config.yml) with the desired settings. **botty** can send 
 ```
   - name: MyCoolTeamName
     channel: MY_COOL_CHANNEL_SLACK_WEBHOOK_URL
+    channel_type: discord
     enable_cron: true
     cron_elapsed_duration: 14400000000000 #4 Hours
     org:  "your GitHub org or Username here"
