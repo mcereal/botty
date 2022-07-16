@@ -19,6 +19,24 @@ func (c ChannelType) checkChannelType() (string, error) {
 		}
 		url = channelURL
 	}
+	if env == "staging" || config.AppConfig.Application.Environment == "development" {
+		var channelURL string
+		if c.ChannelType == "discord" {
+			channelURL = os.Getenv("STAGING_DISCORD_CHANNEL_WEBHOOK_URL")
+		} else {
+			channelURL = os.Getenv("STAGING_SLACK_CHANNEL_WEBHOOK_URL")
+		}
+		url = channelURL
+	}
+	if env == "production" || config.AppConfig.Application.Environment == "development" {
+		var channelURL string
+		if c.ChannelType == "discord" {
+			channelURL = os.Getenv("PRODUCTION_DISCORD_CHANNEL_WEBHOOK_URL")
+		} else {
+			channelURL = os.Getenv("PRODUCTION_SLACK_CHANNEL_WEBHOOK_URL")
+		}
+		url = channelURL
+	}
 	if url == "" {
 		return "", errors.New("no webhook found")
 	}
