@@ -19,4 +19,4 @@ team_name:
     ignore_users: 
     # - conveyor
     repos:
-    - "go-api-server-example"
+    - "botty"
