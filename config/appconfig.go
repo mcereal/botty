@@ -42,7 +42,7 @@ type TeamSettings struct {
 	ChannelType         string   `yaml:"channel_type"`
 	EnableCron          bool     `default:"true" yaml:"enable_cron"`
 	CronElapsedDuration int      `default:"14400000000000" yaml:"cron_elapsed_duration"`
-	Org                 string   `yaml:"org"`
+	Owner               string   `yaml:"owner"`
 	Repos               []string `yaml:"repos"`
 	IgnoreUsers         []string `yaml:"ignore_users"`
 }

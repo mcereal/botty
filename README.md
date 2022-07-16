@@ -157,7 +157,7 @@ Edit the [config.yml](config.yml) with the desired settings. **botty** can send 
     channel_type: discord
     enable_cron: true
     cron_elapsed_duration: 14400000000000 #4 Hours
-    org:  "your GitHub org or Username here"
+    owner:  "your GitHub org or Username here"
     ignore_users:
     - BotThatMakesPRs
     repos:

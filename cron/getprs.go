@@ -53,7 +53,7 @@ func GetOpenPrs() {
 
 	for _, v := range config.AppConfig.Team {
 		repoList := v.Repos
-		org := v.Org
+		org := v.Owner
 		channel := os.Getenv(v.Channel)
 		channelType := v.ChannelType
 
