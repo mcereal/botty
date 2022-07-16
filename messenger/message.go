@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 )
 
 // Message holds the text to be sent posted with the webhook
@@ -117,7 +116,6 @@ func (s *TextInfo) discordMessage() *bytes.Buffer {
 	// json encode the text and create a buffer that can be used by the Rest client
 	data, _ := json.Marshal(messageText)
 	requestBytes := bytes.NewBuffer(data)
-	log.Println(requestBytes)
 	return requestBytes
 }
 

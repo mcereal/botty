@@ -1,16 +1,11 @@
 package messenger
 
 import (
+	// "bytes"
 	"encoding/json"
 	"log"
 	"time"
 )
-
-// IOpenPRs is an interface for creating a new Json parser
-type IOpenPRs interface {
-	GetPayloadinfo() (string string)
-	AddJSONData()
-}
 
 // OpenPRs holds the Json data from the github webhook payload
 type OpenPRs struct {

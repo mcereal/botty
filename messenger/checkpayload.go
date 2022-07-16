@@ -2,7 +2,6 @@ package messenger
 
 import (
 	"bytes"
-	"errors"
 	"log"
 	"os"
 
@@ -10,25 +9,6 @@ import (
 	"github.com/mcereal/botty/config"
 	"golang.org/x/exp/slices"
 )
-
-func checkChannelType(channel, channelType string) (string, error) {
-	url := channel
-	env := os.Getenv("ENVIRONMENT")
-	if env == "development" || config.AppConfig.Application.Environment == "development" {
-		var channelURL string
-		if channelType == "discord" {
-			channelURL = os.Getenv("DEV_DISCORD_CHANNEL_WEBHOOK_URL")
-		} else {
-			channelURL = os.Getenv("DEV_SLACK_CHANNEL_WEBHOOK_URL")
-		}
-		url = channelURL
-	}
-	if url == "" {
-		return "", errors.New("no webhook found")
-	}
-	log.Println(url)
-	return url, nil
-}
 
 // CheckPayload filters payload info to determine what needs to be sent to channel
 func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
@@ -43,7 +23,8 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			channelURL := os.Getenv(v.Channel)
 			channelType := v.ChannelType
 
-			url, err := checkChannelType(channelURL, channelType)
+			checkChannelType := config.ChannelType{Channel: channelURL, ChannelType: channelType}
+			url, err := config.CheckChannel(checkChannelType)
 			if err != nil {
 				log.Println("No Webhook found")
 				return nil, "No Webhook found"
@@ -55,27 +36,29 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 				return nil, "Ignoring Message Post: User Ignored"
 			}
 
-			// Don't send messages on reviews or reopened
-			if payloadData.Action == "review_requested" || payloadData.Action == "synchronize" {
+			// check the payload data for pull request events
+			switch {
+			case payloadData.Action == "review_requested":
+				// Don't send messages on reviews
 				log.Println("This is a dup event")
 				return nil, "This is a dup event"
-			}
-
-			// Don't send messages when closed or merged
-			if payloadData.Action == "closed" && payloadData.PullRequest.Merged {
+			case payloadData.Action == "synchronize":
+				// Don't send messages on reopened
+				log.Println("This is a dup event")
+				return nil, "This is a dup event"
+			case payloadData.Action == "closed" && payloadData.PullRequest.Merged:
+				// Don't send messages when closed and merged
 				log.Println("Merged PR - not reporting")
 				return nil, "Merged PR - not reporting"
-			} else if payloadData.Action == "closed" {
+			case payloadData.Action == "closed":
+				// Don't send messages when closed
 				log.Println("Closed PR - not reporting")
 				return nil, "Closed PR - not reporting"
-			}
-
-			// Don't send message if its a draft
-			if payloadData.PullRequest.Draft {
+			case payloadData.PullRequest.Draft:
+				// Don't send message if its a draft
 				log.Println("PR is draft - not reporting")
 				return nil, "PR is draft  - not reporting"
 			}
-
 			// Create the message
 			messageContent := &TextInfo{
 				Type:        "NewPR",
