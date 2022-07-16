@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/mcereal/botty/config"
@@ -47,7 +48,12 @@ func main() {
 	r := router.InitializeRouter(env)
 
 	// create http server
-	srv := &http.Server{}
+	srv := &http.Server{
+		ReadTimeout:       1 * time.Second,
+		WriteTimeout:      1 * time.Second,
+		IdleTimeout:       30 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+	}
 
 	/*
 	 populate http server with environment defaults.
