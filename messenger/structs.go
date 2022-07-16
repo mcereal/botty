@@ -1,4 +1,4 @@
-package github
+package messenger
 
 import (
 	"encoding/json"

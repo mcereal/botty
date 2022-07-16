@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mcereal/go-api-server-example/client"
-	"github.com/mcereal/go-api-server-example/github"
+	"github.com/mcereal/go-api-server-example/messenger"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -28,7 +28,7 @@ func (h *Handler) GitHubWebhookHandler(c *gin.Context) {
 	}
 
 	// get the message and url
-	body, url := github.CheckPayload(jsonDataBytes, c)
+	body, url := messenger.CheckPayload(jsonDataBytes, c)
 	if body == nil {
 		return
 	}

@@ -1,4 +1,4 @@
-package github
+package messenger
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mcereal/go-api-server-example/config"
-	"github.com/mcereal/go-api-server-example/messenger"
 	"golang.org/x/exp/slices"
 )
 
@@ -18,8 +17,6 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 	payloadData := openPRs.Data
 	// check to see if the the repo in payload is acceptable
 	for _, v := range config.AppConfig.Team {
-		log.Println(v.Repos)
-		log.Println(payloadData.Repository.Name)
 		if slices.Contains(v.Repos, payloadData.Repository.Name) {
 			url := os.Getenv(v.Channel)
 			env := os.Getenv("ENVIRONMENT")
@@ -59,7 +56,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			}
 
 			// Create the slack message
-			messageContent := &messenger.TextInfo{
+			messageContent := &TextInfo{
 				Type:        "NewPR",
 				Action:      payloadData.Action,
 				URL:         payloadData.PullRequest.HTMLURL,

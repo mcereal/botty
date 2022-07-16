@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/go-co-op/gocron"
-	"github.com/mcereal/go-api-server-example/github"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,7 +19,7 @@ func ScheduleCron() {
 	s.ChangeLocation(location)
 	fmt.Println("Timezone:", s.Location())
 	// j, _ := s.Every(4).Hours().Do(github.GetOpenPrs)
-	j, _ := s.Every(1).Monday().Tuesday().Wednesday().Thursday().Friday().At("09:30;13:30;17:30").Do(github.GetOpenPrs)
+	j, _ := s.Every(1).Monday().Tuesday().Wednesday().Thursday().Friday().At("09:30;13:30;17:30").Do(GetOpenPrs)
 
 	s.StartAsync()
 

@@ -1,4 +1,4 @@
-package github
+package cron
 
 import (
 	"bytes"
@@ -62,7 +62,7 @@ func GetOpenPrs() {
 				}
 				_ = responseHeader
 				// fmt.Println(responseBytes)
-				listPulls := ListPulls{}
+				listPulls := messenger.ListPulls{}
 				error := json.Unmarshal(responseBytes, &listPulls)
 				if error != nil {
 					log.Println("Failed to Unmarshal JSON")
