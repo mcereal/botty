@@ -40,7 +40,7 @@ type TextInfo struct {
 	Body        string
 }
 
-// Embeds is the message embeded content
+// Embeds is the message embedded content
 type Embeds struct {
 	Author      Author `json:"author"`
 	Description string `json:"description"`

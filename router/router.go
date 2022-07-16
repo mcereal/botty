@@ -20,7 +20,7 @@ func InitializeRouter(e string) *gin.Engine {
 	r := gin.Default()
 
 	// Create a new handler based off of the Config struct.
-	// The new handler maps the initalized gin Default r.
+	// The new handler maps the initialized gin Default r.
 	handler.NewHandler(&handler.Config{
 		R: r,
 	})

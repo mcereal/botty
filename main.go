@@ -58,7 +58,7 @@ func main() {
 	/*
 	 populate http server with environment defaults.
 	 if the environment is development "localhost" is added
-	 in the address. This is not neccesary, but prevents pop up
+	 in the address. This is not necessary, but prevents pop up
 	 dialog every time you start the server.
 	*/
 	if env == "development" {
@@ -82,7 +82,7 @@ func main() {
 		Gracefully exit server when the operating system signal is interupted.
 		A channel is created that takes in the the the os signal. Then a go routine
 		which is a lightweight thread execution runs in the background. When it
-		recieves the "quit" variable which is mapped too oc. Interrupt then it will
+		receives the "quit" variable which is mapped too oc. Interrupt then it will
 		close the server.
 	*/
 
@@ -90,7 +90,7 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
-	// go routine to close server when channel recieves interupt
+	// go routine to close server when channel receives interrupt
 	go func() {
 		<-quit
 		log.Println("receive interrupt signal")

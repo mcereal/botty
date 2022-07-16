@@ -13,12 +13,12 @@ import (
 // GitHubWebhookHandler is the handler for Github webhooks
 func (h *Handler) GitHubWebhookHandler(c *gin.Context) {
 
-	// set headers and send a json response that the webhook was recieved
+	// set headers and send a json response that the webhook was received
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Content-Type", "application/json")
 	c.Header("User-Agent", "cs-code-review-bot")
 	c.JSON(http.StatusOK, gin.H{
-		"Message": "Webhook recieved",
+		"Message": "Webhook received",
 	})
 
 	// read the request body
