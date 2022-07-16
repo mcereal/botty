@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// IOpenPRs is an interface for creating a new Json parser
+// ICheckChannel is an interface for checking channel details
 type ICheckChannel interface {
 	checkChannelType() (string, error)
 	// CheckPayload() (*bytes.Buffer, string)
@@ -56,6 +56,7 @@ func (c ChannelType) checkChannelType() (string, error) {
 	return url, nil
 }
 
+// CheckChannel checks for the correct webhook for the environment
 func CheckChannel(o ICheckChannel) (string, error) {
 	url, err := o.checkChannelType()
 	return url, err
