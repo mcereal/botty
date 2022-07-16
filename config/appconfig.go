@@ -40,7 +40,7 @@ type TeamSettings struct {
 	Name                string   `yaml:"name"`
 	Channel             string   `yaml:"channel"`
 	ChannelType         string   `yaml:"channel_type"`
-	EnableCron          bool     `default:"false" yaml:"enable_cron"`
+	EnableCron          bool     `default:"true" yaml:"enable_cron"`
 	CronElapsedDuration int      `default:"14400000000000" yaml:"cron_elapsed_duration"`
 	Org                 string   `yaml:"org"`
 	Repos               []string `yaml:"repos"`
