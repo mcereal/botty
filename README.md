@@ -1,4 +1,4 @@
-# botty [![build](https://github.com/mcereal/botty/actions/workflows/build.yml/badge.svg)](https://github.com/mcereal/botty/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=botty&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=botty)
+# botty [![build](https://github.com/mcereal/botty/actions/workflows/build.yml/badge.svg)](https://github.com/mcereal/botty/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=botty&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=botty) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **botty** is a simple Go application that posts open pull requests to a team communication app, and checks for stale PRs.
 
