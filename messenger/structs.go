@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-// ChannelType holds the type of channel and webhhok value
-type ChannelType struct {
-	Channel, ChannelType string
-}
-
 // OpenPRs holds the Json data from the github webhook payload
 type OpenPRs struct {
 	Data *payloadStruct
