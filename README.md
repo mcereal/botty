@@ -1,6 +1,6 @@
-# github-pr-review-bot
+# botty
 
-**github-pr-review-bot** is a simple Go application that posts open pull requests to a team communication app, and checks for stale PRs.
+**botty** is a simple Go application that posts open pull requests to a team communication app, and checks for stale PRs.
 
 Currently supported apps are:
 
@@ -36,7 +36,7 @@ Currently supported apps are:
 
 ## Requirements
 
-**github-pr-review-bot** is currently running on Go version 1.18. You must have this installed to run. Optionally you can [install nodemon](https://www.npmjs.com/package/nodemon) **globally** if you want to hot reload the project on file save. You will have to have [Node.js](https://nodejs.org/en/download/) installed if you want to do this.
+**botty** is currently running on Go version 1.18. You must have this installed to run. Optionally you can [install nodemon](https://www.npmjs.com/package/nodemon) **globally** if you want to hot reload the project on file save. You will have to have [Node.js](https://nodejs.org/en/download/) installed if you want to do this.
 
 _note: Using nodemon is optional, it just makes it easy while developing._
 
@@ -147,7 +147,7 @@ ENVIRONMENT="development"
 
 ### Editing the config
 
-Edit the [config.yml](config.yml) with the desired settings. **github-pr-review-bot** can send slack messages to any channel, monitor any repo, and tag any team. To set up a new team provide the team name, the Slack group Id, a unique name for the webhook environment variable, and any repos you would like to monitor.
+Edit the [config.yml](config.yml) with the desired settings. **botty** can send slack messages to any channel, monitor any repo, and tag any team. To set up a new team provide the team name, the Slack group Id, a unique name for the webhook environment variable, and any repos you would like to monitor.
 
 ```
   - name: MyCoolTeamName
