@@ -8,10 +8,11 @@ import (
 	yaml "gopkg.in/yaml.v3"
 )
 
+// _configPath is the path to the application config
 const _configPath = "config.yml"
 
-// TestConfigPath is file path used for unit tests.
-var TestConfigPath string
+// _testConfigPath is file path used for unit tests.
+var _testConfigPath string
 
 // AppConfig is the package level variable exposing the applications configs.
 var AppConfig Config
@@ -48,11 +49,11 @@ type TeamSettings struct {
 func readFile() {
 	var file *os.File
 	var err error
-	if TestConfigPath == "" {
+	if _testConfigPath == "" {
 		file, err = os.Open(_configPath)
 	} else {
 		log.Debug("test config path is populated")
-		file, err = os.Open(TestConfigPath)
+		file, err = os.Open(_testConfigPath)
 	}
 	if err != nil {
 		if err.Error() == "open config.yml: no such file or directory" {
