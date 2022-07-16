@@ -42,7 +42,7 @@ jobs:
         go test -race -coverpkg $(go list ./... | grep -v generated | tr '\n' ',') -coverprofile output/cover.out ./...
         go tool cover -func=output/cover.out | grep total
         go tool cover --html=output/cover.out -o output/coverage.html
-        
+
     - name: vet
       run: |
         go vet ./... > output/vet.out
@@ -56,6 +56,7 @@ jobs:
       uses: golangci/golangci-lint-action@v3
       with:
         version: latest
+        args: --out-format checkstyle > output/golangci-lintreport.xml
 
     - name: sonar-cloud-scan
       uses: SonarSource/sonarcloud-github-action@master
