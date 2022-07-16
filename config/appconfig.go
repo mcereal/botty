@@ -98,6 +98,7 @@ type PlainFormatter struct {
 	LevelDesc       []string
 }
 
+// Format buulds the logger string format
 func (f *PlainFormatter) Format(entry *log.Entry) ([]byte, error) {
 	timestamp := fmt.Sprint(entry.Time.Format(f.TimestampFormat))
 	return []byte(fmt.Sprintf("%s %s %s\n", f.LevelDesc[entry.Level], timestamp, entry.Message)), nil
