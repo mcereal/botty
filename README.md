@@ -34,6 +34,8 @@ Currently supported apps are:
 
   - [linting](https://github.com/mcereal/go-api-server#linting)
 
+- [Questions](https://github.com/mcereal/go-api-server#questions)
+
 ## Requirements
 
 **botty** is currently running on Go version 1.18. You must have this installed to run. Optionally you can [install nodemon](https://www.npmjs.com/package/nodemon) **globally** if you want to hot reload the project on file save. You will have to have [Node.js](https://nodejs.org/en/download/) installed if you want to do this.
@@ -227,3 +229,7 @@ $ go install honnef.co/go/tools/cmd/staticcheck@latest
 ```
 $ golangci-lint run
 ```
+
+## Questions
+
+[mceareal](https://github.com/mcereal)
