@@ -1,4 +1,4 @@
-module github.com/mcereal/go-api-server-example
+module github.com/mcereal/botty
 
 go 1.18
 

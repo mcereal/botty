@@ -1,0 +1,81 @@
+name: go-build
+on: [push]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Security Scan
+      uses: securego/gosec@master
+      with:
+        # we let the report trigger content trigger a failure using the GitHub Security features.
+        args: '-no-fail -fmt sarif -out results.sarif ./...'
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: results.sarif
+
+    - name: set-up-go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: make-output-directory
+      run: mkdir output
+
+    - name: test
+      run: go test -v ./... -json > output/test-report.out
+
+    - name: cover
+      run: |
+        go test -race -coverpkg $(go list ./... | grep -v generated | tr '\n' ',') -coverprofile output/cover.out ./...
+        go tool cover -func=output/cover.out | grep total
+        go tool cover --html=output/cover.out -o output/coverage.html
+    - name: vet
+      run: |
+        go vet ./... > output/vet.out
+    - name: revive
+      run: |
+        go install github.com/mgechev/revive@latest
+        revive -exclude generated.go -exclude models_gen.go --exclude schema.resolvers.go -formatter default ./... > output/revive.out
+    - name: sonar-cloud-scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    
+    - name: login to docker hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+    
+    - name: build the image
+      run: |
+        docker buildx build --push \
+          --tag mcereal/botty:0.0.1 \
+          --tag mcereal/botty:latest \
+          --tag ghcr.io/mcereal/botty:0.0.1 \
+          --tag ghcr.io/mcereal/botty:latest \
+          --platform linux/amd64,linux/arm/v7,linux/arm64 .
