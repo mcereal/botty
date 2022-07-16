@@ -42,9 +42,11 @@ jobs:
         go test -race -coverpkg $(go list ./... | grep -v generated | tr '\n' ',') -coverprofile output/cover.out ./...
         go tool cover -func=output/cover.out | grep total
         go tool cover --html=output/cover.out -o output/coverage.html
+        
     - name: vet
       run: |
         go vet ./... > output/vet.out
+
     - name: revive
       run: |
         go install github.com/mgechev/revive@latest
@@ -58,5 +60,5 @@ jobs:
     - name: sonar-cloud-scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
