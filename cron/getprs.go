@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -13,24 +12,6 @@ import (
 	"github.com/mcereal/botty/config"
 	"github.com/mcereal/botty/messenger"
 )
-
-func checkChannelType(channel, channelType string) (string, error) {
-	url := channel
-	env := os.Getenv("ENVIRONMENT")
-	if env == "development" || config.AppConfig.Application.Environment == "development" {
-		var channelURL string
-		if channelType == "discord" {
-			channelURL = os.Getenv("DEV_DISCORD_CHANNEL_WEBHOOK_URL")
-		} else {
-			channelURL = os.Getenv("DEV_SLACK_CHANNEL_WEBHOOK_URL")
-		}
-		url = channelURL
-	}
-	if url == "" {
-		return "", errors.New("no webhook found")
-	}
-	return url, nil
-}
 
 // GetOpenPrs gets Github PRs
 func GetOpenPrs() {
@@ -54,13 +35,14 @@ func GetOpenPrs() {
 	for _, v := range config.AppConfig.Team {
 		repoList := v.Repos
 		org := v.Owner
-		channel := os.Getenv(v.Channel)
+		channelURL := os.Getenv(v.Channel)
 		channelType := v.ChannelType
 
-		channelURL, err := checkChannelType(channel, channelType)
+		checkChannelType := messenger.ChannelType{Channel: channelURL, ChannelType: channelType}
+		channelURL, err := messenger.CheckChannel(checkChannelType)
 		if err != nil {
 			log.Println("No Webhook found")
-
+			// return nil, "No Webhook found"
 		}
 		elapsedDuration := v.CronElapsedDuration
 
@@ -97,6 +79,7 @@ func GetOpenPrs() {
 						// fmt.Println("TIME", listPulls[v].CreatedAt)
 						messageContent := &messenger.TextInfo{
 							Type:        "Stale",
+							ChannelType: channelType,
 							URL:         htmlURL,
 							MessageBody: elapsedMessage,
 							Repo:        repoName,
@@ -115,6 +98,7 @@ func GetOpenPrs() {
 							Body:              body,
 							AdditionalHeaders: addHeaders.Header,
 						}
+
 						responseBytes, responseHeader, err := restClient.MakeRestCall()
 						if err != nil {
 							log.Println("Failed to make request")

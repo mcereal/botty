@@ -1,9 +1,7 @@
 package config
 
 import (
-	"fmt"
 	"os"
-	"time"
 
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
@@ -92,28 +90,12 @@ func processError(err error) {
 	os.Exit(2)
 }
 
-// PlainFormatter stuct for new log formatter
-type PlainFormatter struct {
-	TimestampFormat string `json:"timestamp"`
-	LevelDesc       []string
-}
-
-// Format buulds the logger string format
-func (f *PlainFormatter) Format(entry *log.Entry) ([]byte, error) {
-	timestamp := fmt.Sprint(entry.Time.Format(f.TimestampFormat))
-	return []byte(fmt.Sprintf("%s %s %s\n", f.LevelDesc[entry.Level], timestamp, entry.Message)), nil
-}
-
+// set the logrus logger configuration
 func setupLogging() {
-	plainFormatter := &PlainFormatter{
-		TimestampFormat: time.RFC1123,
-		LevelDesc:       []string{"PANC", "FATL", "ERRO", "WARN", "INFO", "DEBG"},
-	}
-	// log.SetFormatter(&log.JSONFormatter{
-	// 	PrettyPrint: true,
-	// 	FieldMap:    log.FieldMap{log.FieldKeyFile: "test"},
-	// })
-	log.SetFormatter(plainFormatter)
+	log.SetFormatter(&log.JSONFormatter{
+		PrettyPrint: true,
+		// FieldMap:    log.FieldMap{log.FieldKeyFile: "test"},
+	})
 	log.SetLevel(log.DebugLevel)
 	log.SetReportCaller(true)
 }
