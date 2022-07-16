@@ -18,8 +18,8 @@ func ScheduleCron() {
 	}
 	s.ChangeLocation(location)
 	fmt.Println("Timezone:", s.Location())
-	// j, _ := s.Every(4).Hours().Do(GetOpenPrs)
-	j, _ := s.Every(1).Monday().Tuesday().Wednesday().Thursday().Friday().At("09:30;13:30;17:30").Do(GetOpenPrs)
+	j, _ := s.Every(4).Hours().Do(GetOpenPrs)
+	// j, _ := s.Every(1).Monday().Tuesday().Wednesday().Thursday().Friday().At("09:30;13:30;17:30").Do(GetOpenPrs)
 
 	s.StartAsync()
 

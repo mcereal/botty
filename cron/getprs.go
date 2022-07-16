@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -12,6 +13,25 @@ import (
 	"github.com/mcereal/botty/config"
 	"github.com/mcereal/botty/messenger"
 )
+
+func checkChannelType(channel, channelType string) (string, error) {
+	url := channel
+	env := os.Getenv("ENVIRONMENT")
+	if env == "development" || config.AppConfig.Application.Environment == "development" {
+		var channelURL string
+		if channelType == "discord" {
+			channelURL = os.Getenv("DEV_DISCORD_CHANNEL_WEBHOOK_URL")
+		} else {
+			channelURL = os.Getenv("DEV_SLACK_CHANNEL_WEBHOOK_URL")
+		}
+		url = channelURL
+	}
+	if url == "" {
+		return "", errors.New("no webhook found")
+	}
+	log.Println(url)
+	return url, nil
+}
 
 // GetOpenPrs gets Github PRs
 func GetOpenPrs() {
@@ -35,16 +55,16 @@ func GetOpenPrs() {
 	for _, v := range config.AppConfig.Team {
 		repoList := v.Repos
 		org := v.Org
-		channelURL := os.Getenv(v.Channel)
-		elapsedDuration := v.CronElapsedDuration
-		env := os.Getenv("ENVIRONMENT")
-		if env == "development" || config.AppConfig.Application.Environment == "development" {
-			channelURL = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
-		}
-		if channelURL == "" {
+		channel := os.Getenv(v.Channel)
+		channelType := v.ChannelType
+
+		channelURL, err := checkChannelType(channel, channelType)
+		if err != nil {
 			log.Println("No Webhook found")
-			return
+
 		}
+		elapsedDuration := v.CronElapsedDuration
+
 		if v.EnableCron {
 			for r := range repoList {
 				url := fmt.Sprintf("%s/repos/%s/%s/pulls", gitHubBaseURL, org, repoList[r])
