@@ -21,7 +21,7 @@ func GetOpenPrs() {
 	if gitHubBaseURL == "" {
 		gitHubBaseURL = config.AppConfig.Github.GitHubURL
 	}
-	token := os.Getenv("GITHUB_TOKEN")
+	token := os.Getenv("GITHUB_SECRET_TOKEN")
 	if token == "" {
 		token = config.AppConfig.Github.GitHubToken
 	}
@@ -36,8 +36,8 @@ func GetOpenPrs() {
 		repoList := v.Repos
 		org := v.Org
 		channelURL := os.Getenv(v.Channel)
+		elapsedDuration := v.CronElapsedDuration
 		env := os.Getenv("ENVIRONMENT")
-		log.Println(org)
 		if env == "development" || config.AppConfig.Application.Environment == "development" {
 			channelURL = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
 		}
@@ -61,20 +61,21 @@ func GetOpenPrs() {
 					log.Println("Failed to make request")
 				}
 				_ = responseHeader
-				// fmt.Println(responseBytes)
+
 				listPulls := messenger.ListPulls{}
 				error := json.Unmarshal(responseBytes, &listPulls)
 				if error != nil {
+					log.Println(error)
 					log.Println("Failed to Unmarshal JSON")
 				}
 				for v := range listPulls {
 					htmlURL := listPulls[v].HTMLURL
 					repoName := listPulls[v].Head.Repo.Name
 					pullNumber := listPulls[v].Number
-					elapsedtime, elapsedMessage := ElapsedTime(listPulls[v].CreatedAt)
+					elapsedtime, elapsedMessage := ElapsedTime(listPulls[v].CreatedAt, elapsedDuration)
 					if elapsedtime && !listPulls[v].Draft {
-						fmt.Println("DRAFT", listPulls[v].Draft)
-						fmt.Println("TIME", listPulls[v].CreatedAt)
+						// fmt.Println("DRAFT", listPulls[v].Draft)
+						// fmt.Println("TIME", listPulls[v].CreatedAt)
 						messageContent := &messenger.TextInfo{
 							Type:        "Stale",
 							URL:         htmlURL,
@@ -87,7 +88,7 @@ func GetOpenPrs() {
 						addHeaders := client.NewHeader()
 						addHeaders.AddDefaultHeaders()
 
-						// Create a REST client and then make the request using the slack message body
+						// Create a REST client and then make the request using the message body
 						restClient := &client.RestClient{
 							Ctx:               ctx,
 							BaseURL:           channelURL,
@@ -99,6 +100,7 @@ func GetOpenPrs() {
 						if err != nil {
 							log.Println("Failed to make request")
 						}
+						log.Println(body)
 						_ = responseBytes
 						_ = responseHeader
 					}

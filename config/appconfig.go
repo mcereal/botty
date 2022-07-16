@@ -26,7 +26,7 @@ type Config struct {
 		Port string `default:"8080" yaml:"port"`
 	} `yaml:"server"`
 	Github struct {
-		GitHubURL   string `default:"https://github.com/api/v3" yaml:"github_url"`
+		GitHubURL   string `default:"https://api.github.com" yaml:"github_url"`
 		GitHubToken string `default:"" yaml:"github_token"`
 	} `yaml:"github"`
 	Team []TeamSettings `yaml:"team_name"`
@@ -34,12 +34,13 @@ type Config struct {
 
 // TeamSettings holds the team settings
 type TeamSettings struct {
-	Name        string   `yaml:"name"`
-	Channel     string   `yaml:"channel"`
-	EnableCron  bool     `default:"false" yaml:"enable_cron"`
-	Org         string   `yaml:"org"`
-	Repos       []string `yaml:"repos"`
-	IgnoreUsers []string `yaml:"ignore_users"`
+	Name                string   `yaml:"name"`
+	Channel             string   `yaml:"channel"`
+	EnableCron          bool     `default:"false" yaml:"enable_cron"`
+	CronElapsedDuration int      `default:"14400000000000" yaml:"cron_elapsed_duration"`
+	Org                 string   `yaml:"org"`
+	Repos               []string `yaml:"repos"`
+	IgnoreUsers         []string `yaml:"ignore_users"`
 }
 
 // readFile opens the config file, parses it, and loads the Config struct

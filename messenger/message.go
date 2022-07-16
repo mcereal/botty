@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 )
 
 // Message holds the text to be sent posted with the webhook
@@ -67,26 +68,26 @@ func (s *TextInfo) CreateMessage() *bytes.Buffer {
 		}
 	}
 
-	if s.Type == "Stale" {
-		s.Emoji = ":warning:"
-	}
-
-	// build the text string from the github url and description
-	content := fmt.Sprintf("%s [%s:%v](%s) %s", s.Emoji, s.Repo, s.Pull, s.URL, s.MessageBody)
-
 	// Create the embedded message
-	embeds := []Embeds{{Author{s.Login, s.AuthorURL, s.AvatarURL}, s.Body}}
+	embeds := Embeds{Author{s.Login, s.AuthorURL, s.AvatarURL}, s.Body}
 
-	// create the  text based off of the SlackText struct
 	messageText := &Message{
 		Username:     "GitHub",
 		BotAvatarURL: "https://cdn.discordapp.com/avatars/997248910991048874/df91181b3f1cf0ef1592fbe18e0962d7.webp?size=160",
-		Content:      content,
-		Embeds:       embeds,
+	}
+
+	if s.Type == "Stale" {
+		s.Emoji = ":warning:"
+		messageText.Content = fmt.Sprintf("%s [%s:%v](%s) %s", s.Emoji, s.Repo, s.Pull, s.URL, s.MessageBody)
+
+	} else {
+		messageText.Embeds = append(messageText.Embeds, embeds)
+		messageText.Content = fmt.Sprintf("%s [%s:%v](%s) %s", s.Emoji, s.Repo, s.Pull, s.URL, s.MessageBody)
 	}
 
 	// json encode the text and create a buffer that can be used by the Rest client
 	data, _ := json.Marshal(messageText)
 	requestBytes := bytes.NewBuffer(data)
+	log.Println(requestBytes)
 	return requestBytes
 }
