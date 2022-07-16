@@ -34,11 +34,13 @@ type TextInfo struct {
 	AvatarURL   string
 	Login       string
 	AuthorURL   string
+	Body        string
 }
 
 // Embeds is the message embeded content
 type Embeds struct {
-	Author Author `json:"author"`
+	Author      Author `json:"author"`
+	Description string `json:"description"`
 }
 
 // Author is the author information
@@ -72,7 +74,7 @@ func (s *TextInfo) CreateMessage() *bytes.Buffer {
 	// build the text string from the github url and description
 	content := fmt.Sprintf("%s [%s:%v](%s) %s", s.Emoji, s.Repo, s.Pull, s.URL, s.MessageBody)
 
-	embeds := []Embeds{{Author{s.Login, s.AuthorURL, s.AvatarURL}}}
+	embeds := []Embeds{{Author{s.Login, s.AuthorURL, s.AvatarURL}, s.Body}}
 
 	// create the  text based off of the SlackText struct
 	messageText := &Message{

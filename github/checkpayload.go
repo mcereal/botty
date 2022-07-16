@@ -70,6 +70,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 				AvatarURL:   payloadData.Sender.AvatarURL,
 				Login:       payloadData.Sender.Login,
 				AuthorURL:   payloadData.Sender.AuthorURL,
+				Body:        payloadData.PullRequest.Body,
 			}
 
 			body := messageContent.CreateMessage()
