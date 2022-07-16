@@ -21,6 +21,7 @@ func main() {
 		log.Warn("Error loading .env file. Proceeding with default config. ")
 	}
 
+	// Start the Stale PR cron job
 	cron.ScheduleCron()
 
 	/*

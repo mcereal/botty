@@ -35,7 +35,7 @@ func (h *Handler) GitHubWebhookHandler(c *gin.Context) {
 	addHeaders := client.NewHeader()
 	addHeaders.AddDefaultHeaders()
 
-	// Create a REST client and then make the request using the slack message body
+	// Create a REST client and then make the request using the message body
 	restClient := &client.RestClient{
 		Ctx:               c,
 		BaseURL:           url,

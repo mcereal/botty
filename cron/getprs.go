@@ -100,7 +100,6 @@ func GetOpenPrs() {
 						if err != nil {
 							log.Println("Failed to make request")
 						}
-						log.Println(body)
 						_ = responseBytes
 						_ = responseHeader
 					}

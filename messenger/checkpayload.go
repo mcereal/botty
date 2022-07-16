@@ -10,7 +10,7 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// CheckPayload filters payload info to determine what needs to be sent to slack
+// CheckPayload filters payload info to determine what needs to be sent to channel
 func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 	openPRs := NewOpenPRs()
 	openPRs.AddJSONData(response)
@@ -55,7 +55,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 				return nil, "PR is draft  - not reporting"
 			}
 
-			// Create the slack message
+			// Create the message
 			messageContent := &TextInfo{
 				Type:        "NewPR",
 				Action:      payloadData.Action,
