@@ -74,6 +74,7 @@ func (s *TextInfo) CreateMessage() *bytes.Buffer {
 	// build the text string from the github url and description
 	content := fmt.Sprintf("%s [%s:%v](%s) %s", s.Emoji, s.Repo, s.Pull, s.URL, s.MessageBody)
 
+	// Create the embedded message
 	embeds := []Embeds{{Author{s.Login, s.AuthorURL, s.AvatarURL}, s.Body}}
 
 	// create the  text based off of the SlackText struct

@@ -37,7 +37,8 @@ type TeamSettings struct {
 	Name        string   `yaml:"name"`
 	Channel     string   `yaml:"channel"`
 	EnableCron  bool     `default:"false" yaml:"enable_cron"`
-	Repos       []string `default:"conveyor cs-infra operations cs-apps" yaml:"repos"`
+	Org         string   `yaml:"org"`
+	Repos       []string `yaml:"repos"`
 	IgnoreUsers []string `yaml:"ignore_users"`
 }
 

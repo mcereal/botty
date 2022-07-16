@@ -13,6 +13,7 @@ team_name:
   - name: ops
     channel: DEFAULT_CHANNEL_WEBHOOK_URL
     enable_cron: true
+    org:  "mcereal"
     ignore_users: 
     # - conveyor
     repos:

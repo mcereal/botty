@@ -34,8 +34,10 @@ func GetOpenPrs() {
 
 	for _, v := range config.AppConfig.Team {
 		repoList := v.Repos
+		org := v.Org
 		channelURL := os.Getenv(v.Channel)
 		env := os.Getenv("ENVIRONMENT")
+		log.Println(org)
 		if env == "development" || config.AppConfig.Application.Environment == "development" {
 			channelURL = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
 		}
@@ -45,7 +47,7 @@ func GetOpenPrs() {
 		}
 		if v.EnableCron {
 			for r := range repoList {
-				url := fmt.Sprintf("%s/repos/CIO-SETS/%s/pulls", gitHubBaseURL, repoList[r])
+				url := fmt.Sprintf("%s/repos/%s/%s/pulls", gitHubBaseURL, org, repoList[r])
 				newClient := &client.RestClient{
 					Ctx:               ctx,
 					BaseURL:           url,
@@ -73,14 +75,14 @@ func GetOpenPrs() {
 					if elapsedtime && !listPulls[v].Draft {
 						fmt.Println("DRAFT", listPulls[v].Draft)
 						fmt.Println("TIME", listPulls[v].CreatedAt)
-						slackMessage := &messenger.TextInfo{
+						messageContent := &messenger.TextInfo{
 							Type:        "Stale",
 							URL:         htmlURL,
 							MessageBody: elapsedMessage,
 							Repo:        repoName,
 							Pull:        pullNumber,
 						}
-						body := slackMessage.CreateMessage()
+						body := messageContent.CreateMessage()
 
 						addHeaders := client.NewHeader()
 						addHeaders.AddDefaultHeaders()
