@@ -1,7 +1,9 @@
 package config
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
@@ -90,15 +92,35 @@ func processError(err error) {
 	os.Exit(2)
 }
 
-// func setupLogging() {
-// 	log.SetFormatter(&log.JSONFormatter{})
-// 	log.SetLevel(log.DebugLevel)
-// 	log.SetReportCaller(true)
-// }
+// PlainFormatter stuct for new log formatter
+type PlainFormatter struct {
+	TimestampFormat string `json:"timestamp"`
+	LevelDesc       []string
+}
+
+func (f *PlainFormatter) Format(entry *log.Entry) ([]byte, error) {
+	timestamp := fmt.Sprint(entry.Time.Format(f.TimestampFormat))
+	return []byte(fmt.Sprintf("%s %s %s\n", f.LevelDesc[entry.Level], timestamp, entry.Message)), nil
+}
+
+func setupLogging() {
+	plainFormatter := &PlainFormatter{
+		TimestampFormat: time.RFC1123,
+		LevelDesc:       []string{"PANC", "FATL", "ERRO", "WARN", "INFO", "DEBG"},
+	}
+
+	// log.SetFormatter(&log.JSONFormatter{
+	// 	PrettyPrint: true,
+	// 	FieldMap:    log.FieldMap{log.FieldKeyFile: "test"},
+	// })
+	log.SetFormatter(plainFormatter)
+	log.SetLevel(log.DebugLevel)
+	log.SetReportCaller(true)
+}
 
 // LoadConfiguration is for loading config from files and environment and setting it ready to be read.
 func LoadConfiguration() {
-	// setupLogging()
+	setupLogging()
 	readFile()
 	readEnv()
 }
