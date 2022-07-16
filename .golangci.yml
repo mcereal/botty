@@ -1,6 +1,3 @@
-# Refer to golangci-lint's example config file for more options and information:
-# https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
-
 run:
   go: '1.18'
   timeout: 5m
@@ -13,9 +10,6 @@ linters:
     - revive
     - govet
     - staticcheck
-
-revive:
-  severity: error
 
 issues:
   exclude-use-default: false
