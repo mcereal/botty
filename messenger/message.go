@@ -12,6 +12,7 @@ type Message struct {
 	Username     string   `json:"username"`
 	BotAvatarURL string   `json:"avatar_url"`
 	Content      string   `json:"content"`
+	Text         string   `json:"text"`
 	Embeds       []Embeds `json:"embeds"`
 }
 
@@ -23,6 +24,7 @@ type IMessage interface {
 // TextInfo is the different contents of the message
 type TextInfo struct {
 	Type        string
+	ChannelType string
 	Action      string
 	URL         string
 	Title       string
@@ -56,8 +58,35 @@ func NewMessage() *Message {
 	return &Message{}
 }
 
-// CreateMessage builds the message string
-func (s *TextInfo) CreateMessage() *bytes.Buffer {
+func (s *TextInfo) slackMessage() *bytes.Buffer {
+	if s.Type == "NewPR" {
+		s.Emoji = ":white_check_mark:"
+
+		if s.Action == "closed" && s.Merged {
+			s.Emoji = ":negative_squared_check_mark:"
+		} else if s.Action == "closed" {
+			s.Emoji = ":negative_squared_check_mark:"
+		}
+	}
+
+	if s.Type == "Stale" {
+		s.Emoji = ":warning:"
+	}
+	// build the text string from the github url and description
+	text := fmt.Sprintf(" %s <%s|%s:%v> %s", s.Emoji, s.URL, s.Repo, s.Pull, s.MessageBody)
+
+	// create the  text based off of the SlackText struct
+	slackText := &Message{
+		Text: text,
+	}
+
+	// json encode the text and create a buffer that can be used by the Rest client
+	data, _ := json.Marshal(slackText)
+	requestBytes := bytes.NewBuffer(data)
+	return requestBytes
+}
+
+func (s *TextInfo) discordMessage() *bytes.Buffer {
 	if s.Type == "NewPR" {
 		s.Emoji = ":white_check_mark:"
 
@@ -90,4 +119,23 @@ func (s *TextInfo) CreateMessage() *bytes.Buffer {
 	requestBytes := bytes.NewBuffer(data)
 	log.Println(requestBytes)
 	return requestBytes
+}
+
+// CreateMessage builds the message string
+func (s *TextInfo) CreateMessage() *bytes.Buffer {
+	if s.Type == "NewPR" {
+		s.Emoji = ":white_check_mark:"
+
+		if s.Action == "closed" && s.Merged {
+			s.Emoji = ":negative_squared_check_mark:"
+		} else if s.Action == "closed" {
+			s.Emoji = ":negative_squared_check_mark:"
+		}
+	}
+
+	if s.ChannelType == "discord" {
+		return s.discordMessage()
+	}
+
+	return s.slackMessage()
 }

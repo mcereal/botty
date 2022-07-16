@@ -67,7 +67,6 @@ func (r *RestClient) MakeRestCall() ([]byte, http.Header, error) {
 
 	// read the response body and check for errors
 	responseBytes, err := ioutil.ReadAll(response.Body)
-	log.Println(response.StatusCode)
 	if response.StatusCode < 200 || response.StatusCode > 300 {
 		log.WithFields(log.Fields{"url": url, "status_code": response.StatusCode}).Errorf("Received bad status code: %v", err)
 		return make([]byte, 0), nil, errors.New(response.Status)

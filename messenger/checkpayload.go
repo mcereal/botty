@@ -2,6 +2,7 @@ package messenger
 
 import (
 	"bytes"
+	"errors"
 	"log"
 	"os"
 
@@ -9,6 +10,25 @@ import (
 	"github.com/mcereal/go-api-server-example/config"
 	"golang.org/x/exp/slices"
 )
+
+func checkChannelType(channel, channelType string) (string, error) {
+	url := channel
+	env := os.Getenv("ENVIRONMENT")
+	if env == "development" || config.AppConfig.Application.Environment == "development" {
+		var channelURL string
+		if channelType == "discord" {
+			channelURL = os.Getenv("DEV_DISCORD_CHANNEL_WEBHOOK_URL")
+		} else {
+			channelURL = os.Getenv("DEV_SLACK_CHANNEL_WEBHOOK_URL")
+		}
+		url = channelURL
+	}
+	if url == "" {
+		return "", errors.New("no webhook found")
+	}
+	log.Println(url)
+	return url, nil
+}
 
 // CheckPayload filters payload info to determine what needs to be sent to channel
 func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
@@ -18,16 +38,16 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 	// check to see if the the repo in payload is acceptable
 	for _, v := range config.AppConfig.Team {
 		if slices.Contains(v.Repos, payloadData.Repository.Name) {
-			url := os.Getenv(v.Channel)
-			env := os.Getenv("ENVIRONMENT")
-			if env == "development" || config.AppConfig.Application.Environment == "development" {
-				url = os.Getenv("DEV_CHANNEL_WEBHOOK_URL")
-			}
 
-			if url == "" {
+			channelURL := os.Getenv(v.Channel)
+			channelType := v.ChannelType
+
+			url, err := checkChannelType(channelURL, channelType)
+			if err != nil {
 				log.Println("No Webhook found")
 				return nil, "No Webhook found"
 			}
+
 			// Dont send a message if the user is ignored
 			if slices.Contains(v.IgnoreUsers, payloadData.Sender.Login) {
 				log.Println("Ignoring Message Post: User Ignored")
@@ -58,6 +78,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			// Create the message
 			messageContent := &TextInfo{
 				Type:        "NewPR",
+				ChannelType: v.ChannelType,
 				Action:      payloadData.Action,
 				URL:         payloadData.PullRequest.HTMLURL,
 				MessageBody: payloadData.PullRequest.Title,

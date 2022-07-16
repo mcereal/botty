@@ -12,6 +12,7 @@ github:
 team_name:
   - name: mcereal
     channel: DEFAULT_CHANNEL_WEBHOOK_URL
+    channel_type: slack
     enable_cron: true
     cron_elapsed_duration: 14400000000000 #4 Hours
     org:  "mcereal"

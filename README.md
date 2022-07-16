@@ -1,6 +1,12 @@
-# cs-code-review-bot
+# github-pr-review-bot
 
-**cs-code-review-bot** is a simple slack application written in Go that posts open pull requests to the [#cs-code-review](https://ciosets.slack.com/archives/C02TB4ZA44S) channel in the [CIO-SETS](https://ciosets.slack.com/archives/C8TKJ7GNR) workspace. It will tag the [@ops](https://ciosets.slack.com/admin/user_groups) group with the pull request details.
+**github-pr-review-bot** is a simple Go application that posts open pull requests to a team communication app, and checks for stale PRs.
+
+Currently supported apps are:
+
+[Discord](https://discord.com)
+
+[Slack](https://slack.com)
 
 ## Table of Contents
 
@@ -30,7 +36,7 @@
 
 ## Requirements
 
-**cs-code-review-bot** is currently running on Go version 1.18. You must have this installed to run. Optionally you can [install nodemon](https://www.npmjs.com/package/nodemon) **globally** if you want to hot reload the project on file save. You will have to have [Node.js](https://nodejs.org/en/download/) installed if you want to do this.
+**github-pr-review-bot** is currently running on Go version 1.18. You must have this installed to run. Optionally you can [install nodemon](https://www.npmjs.com/package/nodemon) **globally** if you want to hot reload the project on file save. You will have to have [Node.js](https://nodejs.org/en/download/) installed if you want to do this.
 
 _note: Using nodemon is optional, it just makes it easy while developing._
 
@@ -141,12 +147,14 @@ ENVIRONMENT="development"
 
 ### Editing the config
 
-Edit the [config.yml](config.yml) with the desired settings. **cs-code-review-bot** can send slack messages to any channel, monitor any repo, and tag any team. To set up a new team provide the team name, the Slack group Id, a unique name for the webhook environment variable, and any repos you would like to monitor.
+Edit the [config.yml](config.yml) with the desired settings. **github-pr-review-bot** can send slack messages to any channel, monitor any repo, and tag any team. To set up a new team provide the team name, the Slack group Id, a unique name for the webhook environment variable, and any repos you would like to monitor.
 
 ```
   - name: MyCoolTeamName
-    slack_group_id: <!subteam^1234qwert>
     channel: MY_COOL_CHANNEL_SLACK_WEBHOOK_URL
+    enable_cron: true
+    cron_elapsed_duration: 14400000000000 #4 Hours
+    org:  "your GitHub org or Username here"
     ignore_users:
     - BotThatMakesPRs
     repos:
