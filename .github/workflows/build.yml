@@ -56,7 +56,6 @@ jobs:
       uses: golangci/golangci-lint-action@v3
       with:
         version: latest
-        args: --out-format checkstyle > output/golangci-lintreport.xml
 
     - name: sonar-cloud-scan
       uses: SonarSource/sonarcloud-github-action@master
