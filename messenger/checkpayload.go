@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mcereal/go-api-server-example/config"
+	"github.com/mcereal/botty/config"
 	"golang.org/x/exp/slices"
 )
 

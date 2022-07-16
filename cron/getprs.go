@@ -8,9 +8,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/mcereal/go-api-server-example/client"
-	"github.com/mcereal/go-api-server-example/config"
-	"github.com/mcereal/go-api-server-example/messenger"
+	"github.com/mcereal/botty/client"
+	"github.com/mcereal/botty/config"
+	"github.com/mcereal/botty/messenger"
 )
 
 // GetOpenPrs gets Github PRs

@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mcereal/go-api-server-example/client"
-	"github.com/mcereal/go-api-server-example/messenger"
+	"github.com/mcereal/botty/client"
+	"github.com/mcereal/botty/messenger"
 	log "github.com/sirupsen/logrus"
 )
 
