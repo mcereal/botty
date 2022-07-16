@@ -18,6 +18,8 @@ type Config struct {
 func NewHandler(c *Config) {
 	h := &Handler{} // currently has no properties
 
+	c.R.GET("/", h.Redirect)
+
 	// create a router group to handle path prefix
 	g := c.R.Group("api/v1")
 	g.POST("/githubwebhook/payload", h.GitHubWebhookHandler)

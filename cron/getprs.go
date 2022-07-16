@@ -29,7 +29,6 @@ func checkChannelType(channel, channelType string) (string, error) {
 	if url == "" {
 		return "", errors.New("no webhook found")
 	}
-	log.Println(url)
 	return url, nil
 }
 
