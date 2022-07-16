@@ -35,6 +35,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 	openPRs := NewOpenPRs()
 	openPRs.AddJSONData(response)
 	payloadData := openPRs.Data
+
 	// check to see if the the repo in payload is acceptable
 	for _, v := range config.AppConfig.Team {
 		if slices.Contains(v.Repos, payloadData.Repository.Name) {
@@ -92,6 +93,7 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			}
 
 			body := messageContent.CreateMessage()
+			log.Println(body)
 			return body, url
 		}
 	}
