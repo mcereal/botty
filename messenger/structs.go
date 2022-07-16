@@ -7,12 +7,6 @@ import (
 	"time"
 )
 
-// IOpenPRs is an interface for creating a new Json parser
-type IOpenPRs interface {
-	checkChannelType() (string, error)
-	// CheckPayload() (*bytes.Buffer, string)
-}
-
 // ChannelType holds the type of channel and webhhok value
 type ChannelType struct {
 	Channel, ChannelType string

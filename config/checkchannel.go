@@ -1,17 +1,26 @@
-package messenger
+package config
 
 import (
 	"errors"
 	"os"
-
-	"github.com/mcereal/botty/config"
 )
+
+// IOpenPRs is an interface for creating a new Json parser
+type ICheckChannel interface {
+	checkChannelType() (string, error)
+	// CheckPayload() (*bytes.Buffer, string)
+}
+
+// ChannelType holds the type of channel and webhhok value
+type ChannelType struct {
+	Channel, ChannelType string
+}
 
 func (c ChannelType) checkChannelType() (string, error) {
 	url := c.Channel
 	env := os.Getenv("ENVIRONMENT")
 	var channelURL string
-	if env == "development" || config.AppConfig.Application.Environment == "development" {
+	if env == "development" || AppConfig.Application.Environment == "development" {
 
 		if c.ChannelType == "discord" {
 			channelURL = os.Getenv("DEV_DISCORD_CHANNEL_WEBHOOK_URL")
@@ -20,7 +29,7 @@ func (c ChannelType) checkChannelType() (string, error) {
 		}
 		url = channelURL
 	}
-	if env == "staging" || config.AppConfig.Application.Environment == "development" {
+	if env == "staging" || AppConfig.Application.Environment == "development" {
 		if c.ChannelType == "discord" {
 			channelURL = os.Getenv("STAGING_DISCORD_CHANNEL_WEBHOOK_URL")
 		} else {
@@ -28,7 +37,7 @@ func (c ChannelType) checkChannelType() (string, error) {
 		}
 		url = channelURL
 	}
-	if env == "production" || config.AppConfig.Application.Environment == "development" {
+	if env == "production" || AppConfig.Application.Environment == "development" {
 		if c.ChannelType == "discord" {
 			channelURL = os.Getenv("PRODUCTION_DISCORD_CHANNEL_WEBHOOK_URL")
 		} else {
@@ -47,7 +56,7 @@ func (c ChannelType) checkChannelType() (string, error) {
 	return url, nil
 }
 
-func CheckChannel(o IOpenPRs) (string, error) {
+func CheckChannel(o ICheckChannel) (string, error) {
 	url, err := o.checkChannelType()
 	return url, err
 }

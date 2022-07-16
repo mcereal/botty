@@ -38,8 +38,8 @@ func GetOpenPrs() {
 		channelURL := os.Getenv(v.Channel)
 		channelType := v.ChannelType
 
-		checkChannelType := messenger.ChannelType{Channel: channelURL, ChannelType: channelType}
-		channelURL, err := messenger.CheckChannel(checkChannelType)
+		checkChannelType := config.ChannelType{Channel: channelURL, ChannelType: channelType}
+		channelURL, err := config.CheckChannel(checkChannelType)
 		if err != nil {
 			log.Println("No Webhook found")
 			// return nil, "No Webhook found"

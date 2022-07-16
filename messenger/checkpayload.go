@@ -23,8 +23,8 @@ func CheckPayload(response []byte, c *gin.Context) (*bytes.Buffer, string) {
 			channelURL := os.Getenv(v.Channel)
 			channelType := v.ChannelType
 
-			checkChannelType := ChannelType{Channel: channelURL, ChannelType: channelType}
-			url, err := CheckChannel(checkChannelType)
+			checkChannelType := config.ChannelType{Channel: channelURL, ChannelType: channelType}
+			url, err := config.CheckChannel(checkChannelType)
 			if err != nil {
 				log.Println("No Webhook found")
 				return nil, "No Webhook found"
