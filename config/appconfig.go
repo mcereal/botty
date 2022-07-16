@@ -108,7 +108,6 @@ func setupLogging() {
 		TimestampFormat: time.RFC1123,
 		LevelDesc:       []string{"PANC", "FATL", "ERRO", "WARN", "INFO", "DEBG"},
 	}
-
 	// log.SetFormatter(&log.JSONFormatter{
 	// 	PrettyPrint: true,
 	// 	FieldMap:    log.FieldMap{log.FieldKeyFile: "test"},
