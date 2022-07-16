@@ -44,7 +44,7 @@ _note: Using nodemon is optional, it just makes it easy while developing._
 
 - [Download Go Installer](https://go.dev/doc/install).
 
-  _note: You can use [homebrew](https://brew.sh) to install with `brew install go`. Sometimes there are issues with homebrew installation when trying to install Go packages globally so I would not recommend it._
+  _note: You can use [homebrew](https://brew.sh) to install with `brew install go`._
 
 - After install you will need to add few environment variables to your path. Open your `.zshrc` or `.bashrc` file which should be in your `$HOME` directory.
 - You can navigate to your `$HOME` directory with `cd $HOME`
