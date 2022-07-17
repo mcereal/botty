@@ -233,4 +233,4 @@ $ golangci-lint run
 
 ## Questions
 
-[mceareal](https://github.com/mcereal)
+[mcereal](https://github.com/mcereal)
