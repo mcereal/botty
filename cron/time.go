@@ -5,9 +5,6 @@ import (
 	"time"
 )
 
-// Set to 4 hours
-// const _duration time.Duration = 14400000000000
-
 // ElapsedTime checks the amount of time it has been since a PR was opned and returns true if the
 // duration has exceeded limits
 func ElapsedTime(s time.Time, d int) (bool, string) {
