@@ -2,7 +2,7 @@
 ## Build
 ##
 
-FROM golang:1.19.0-buster AS build
+FROM golang:1.19.2-buster AS build
 
 ## How to enable for a private repo:
 ## This is the Github username and associated API Key. 
